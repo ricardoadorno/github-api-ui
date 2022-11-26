@@ -1,7 +1,8 @@
 import Footer from "./components/layout/Footer";
 import Navbar from "./components/layout/Navbar";
-import Search from "./components/pages/Search";
+import SearchPage from "./components/pages/SearchPage";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import UserPage from "./components/pages/UserPage";
 
 function App() {
   return (
@@ -9,7 +10,8 @@ function App() {
       <Navbar />
       <Router>
         <Routes>
-          <Route path="/" element={<Search />} />
+          <Route path="/" element={<SearchPage />} />
+          <Route path="/user/:login" element={<UserPage />} />
         </Routes>
       </Router>
       <Footer />
