@@ -1,10 +1,15 @@
 import { FaSearch } from "react-icons/fa";
 import Card from "./Card";
-import { useState } from "react";
+import { useState, useRef } from "react";
+
+type User = {
+  login: string;
+  avatar_url: string;
+};
 
 export default function SearchPage() {
   const [text, setText] = useState("");
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState<User[] | null>(null);
 
   const getUser = async (text: string) => {
     const params = new URLSearchParams({
@@ -17,11 +22,13 @@ export default function SearchPage() {
       },
     }).then((res) => res.json());
 
+    console.log(res.items);
+
     setUsers(res.items);
   };
 
   const clearUsers = () => {
-    setUsers([]);
+    setUsers(null);
     setText("");
   };
 
@@ -57,14 +64,14 @@ export default function SearchPage() {
       <div className="bg-purple-900 rounded-xl flex flex-col justify-center gap-4 py-4">
         {users ? (
           <>
-            <h3 className="m-4 ml-8 text-2xl">
-              Results for: <b>{text}</b>
-            </h3>
-
             <div className="flex flex-row justify-center gap-4 flex-wrap ">
-              {users.map((user) => {
-                return <Card user={user} />;
-              })}
+              {users ? (
+                users.map((user) => {
+                  return <Card user={user} />;
+                })
+              ) : (
+                <div>No Users Found</div>
+              )}
             </div>
           </>
         ) : (
@@ -72,7 +79,7 @@ export default function SearchPage() {
             {" "}
             <FaSearch className="text-5xl text-slate-300 self-center" />
             <p className="text-2xl text-slate-400 text-center">
-              Search for a find a user
+              Search to a find a user
             </p>
           </>
         )}
